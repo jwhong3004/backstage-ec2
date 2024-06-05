@@ -22,7 +22,7 @@ jobs:
   # Job for applying the ec2 instance
   apply_ec2:
     # Use the latest Ubuntu runner
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     
     # Execute this step only if the action input is "apply"
     if: ${{ github.event.inputs.action == 'apply' }}
