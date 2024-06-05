@@ -91,7 +91,7 @@ jobs:
       
       
     # Destroy all resources 
-    - name: Terraform Destroy
+    #- name: Terraform Destroy
     - name: terraform apply
       run: terraform destroy -var instanceName=${{ github.event.inputs.instanceName }} -var awsRegion=${{ github.event.inputs.awsRegion }} -auto-approve
       working-directory: .
