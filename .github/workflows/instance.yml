@@ -40,7 +40,11 @@ jobs:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: ${{ github.event.inputs.awsRegion }}
-    
+
+    - name: pwd
+      run: pwd
+      working-directory: .
+      
     # Initialize Terraform 
     - name: Terraform Init
       run: terraform init
