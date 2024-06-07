@@ -48,17 +48,17 @@ jobs:
     # Initialize Terraform 
     - name: Terraform Init
       run: terraform init
-      working-directory: ./deployment  # Where should this command be run?
+      working-directory: .  # Where should this command be run?
       
     # Format Terraform code
     - name: Terraform Format
       run: terraform fmt
-      working-directory: ./deployment
+      working-directory: .
       
     # Validate the Terraform code 
     - name: Terraform Validate
       run: terraform validate
-      working-directory: ./deployment
+      working-directory: .
       
     # Apply the Terraform plan
     #- name: Terraform vars
@@ -87,14 +87,14 @@ jobs:
         
     - name: Terraform Init
       run: terraform init
-      working-directory: ./deployment
+      working-directory: .
       
     - name: Terraform FMT
       run: terraform fmt
-      working-directory: ./deployment
+      working-directory: .
       
       
     # Destroy all resources 
     - name: Terraform Destroy
       run: terraform destroy -var instanceName=${{ github.event.inputs.instanceName }} -var awsRegion=${{ github.event.inputs.awsRegion }} -var instanceType=${{ github.event.inputs.instanceType }} -auto-approve
-      working-directory: ./deployment
+      working-directory: .
