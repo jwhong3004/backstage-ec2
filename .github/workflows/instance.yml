@@ -35,9 +35,9 @@ jobs:
       
     - name: Download terraform state
       uses: actions/download-artifact@v2
-       with:
-         name: terraform-state
-         path: ./terraform           
+      with:
+        name: terraform-state
+        path: ./terraform           
 
 # adding aws keys. Please store the value of these key in GitHub variables
     - name: Configure AWS credentials
