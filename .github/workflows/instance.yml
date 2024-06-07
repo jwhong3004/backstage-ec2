@@ -32,6 +32,12 @@ jobs:
     # checkout the code from the repository
     - name: Checkout code
       uses: actions/checkout@v2
+      
+    - name: Download terraform state
+      uses: actions/download-artifact@v2
+       with:
+         name: terraform-state
+         path: ./terraform           
 
 # adding aws keys. Please store the value of these key in GitHub variables
     - name: Configure AWS credentials
@@ -65,6 +71,12 @@ jobs:
     - name: terraform apply
       run: terraform apply -var instanceName=${{ github.event.inputs.instanceName }} -var awsRegion=${{ github.event.inputs.awsRegion }} -var instanceType=${{ github.event.inputs.instanceType }} -auto-approve
       working-directory: .
+      
+    - name: Upload terraform state
+      uses: actions/upload-artifact@v2
+      with:
+        name: terraform-state
+        path: ./terraform/terraform.tfstate
 
   # Destroying the  ec2 instance
   destroy_instance:
@@ -75,7 +87,7 @@ jobs:
     
     steps:
     - name: Checkout code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v2 
       
 # adding aws keys. Please store the value of these key in GitHub variables
     - name: Configure AWS credentials
