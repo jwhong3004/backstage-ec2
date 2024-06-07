@@ -33,7 +33,7 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: CP Terraform state file
+    - name: Restore Terraform state file
       run: yes | cp ../terraform.tfstate .
       working-directory: .      
 
@@ -64,7 +64,11 @@ jobs:
     #- name: Terraform vars
     - name: terraform apply
       run: terraform apply -var instanceName=${{ github.event.inputs.instanceName }} -var awsRegion=${{ github.event.inputs.awsRegion }} -var instanceType=${{ github.event.inputs.instanceType }} -auto-approve
-      working-directory: .      
+      working-directory: .    
+      
+    - name: Backup Terraform state file
+      run: yes | cp ./terraform.tfstate ../
+      working-directory: .
 
   # Destroying the  ec2 instance
   destroy_instance:
@@ -91,8 +95,7 @@ jobs:
       
     - name: Terraform FMT
       run: terraform fmt
-      working-directory: .
-      
+      working-directory: .      
       
     # Destroy all resources 
     - name: Terraform Destroy
