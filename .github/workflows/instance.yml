@@ -41,9 +41,10 @@ jobs:
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: ${{ github.event.inputs.awsRegion }}
 
-    - name: Restore Terraform state file
+    - name: Install Terraform state file
       run: aws s3 cp s3://wlsdn-s3/terraform.tfstate ./
-      working-directory: .        
+      working-directory: . 
+      continue-on-error: true
       
     # Initialize Terraform 
     - name: Terraform Init
@@ -66,7 +67,7 @@ jobs:
       run: terraform apply -var instanceName=${{ github.event.inputs.instanceName }} -var awsRegion=${{ github.event.inputs.awsRegion }} -var instanceType=${{ github.event.inputs.instanceType }} -auto-approve
       working-directory: .    
       
-    - name: Backup Terraform state file
+    - name: Upload Terraform state file
       run: aws s3 cp ./terraform.tfstate s3://wlsdn-s3
       working-directory: .
 
@@ -89,7 +90,7 @@ jobs:
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: ${{ github.event.inputs.awsRegion }}
 
-    - name: Restore Terraform state file
+    - name: Install Terraform state file
       run: aws s3 cp s3://wlsdn-s3/terraform.tfstate ./
       working-directory: .     
       
@@ -106,6 +107,6 @@ jobs:
       run: terraform destroy -var instanceName=${{ github.event.inputs.instanceName }} -var awsRegion=${{ github.event.inputs.awsRegion }} -var instanceType=${{ github.event.inputs.instanceType }} -auto-approve
       working-directory: .
 
-    - name: Backup Terraform state file
+    - name: Upload Terraform state file
       run: aws s3 cp ./terraform.tfstate s3://wlsdn-s3
       working-directory: .      
