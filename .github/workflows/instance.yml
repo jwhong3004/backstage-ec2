@@ -47,8 +47,7 @@ jobs:
       run: mkdir -p ${{ github.event.inputs.instanceName }} > /dev/null 2>&1
       
     - name: Install Terraform state file
-      run: aws s3 cp s3://wlsdn-s3/terraform.tfstate ./
-      working-directory: ${{ github.event.inputs.instanceName }}
+      run: aws s3 cp s3://wlsdn-s3/${{ github.event.inputs.instanceName }}/ ./${{ github.event.inputs.instanceName }} --recursive
       continue-on-error: true
       
     # Initialize Terraform 
@@ -73,8 +72,7 @@ jobs:
       working-directory: ${{ github.event.inputs.instanceName }}   
       
     - name: Upload Terraform state file
-      run: aws s3 cp ./terraform.tfstate s3://wlsdn-s3
-      working-directory: ${{ github.event.inputs.instanceName }}
+      run: aws s3 cp ./${{ github.event.inputs.instanceName }} s3://wlsdn-s3/${{ github.event.inputs.instanceName }} --recursive --exclude ".git*"
 
   # Destroying the  ec2 instance
   destroy_instance:
@@ -96,8 +94,7 @@ jobs:
         aws-region: ${{ github.event.inputs.awsRegion }}
 
     - name: Install Terraform state file
-      run: aws s3 cp s3://wlsdn-s3/terraform.tfstate ./
-      working-directory: ${{ github.event.inputs.instanceName }}    
+      run: aws s3 cp s3://wlsdn-s3/${{ github.event.inputs.instanceName }}/ ./${{ github.event.inputs.instanceName }} --recursive
       
     - name: Terraform Init
       run: terraform init
@@ -113,5 +110,4 @@ jobs:
       working-directory: ${{ github.event.inputs.instanceName }}
 
     - name: Upload Terraform state file
-      run: aws s3 cp ./terraform.tfstate s3://wlsdn-s3
-      working-directory: ${{ github.event.inputs.instanceName }}      
+      run: aws s3 cp ./${{ github.event.inputs.instanceName }} s3://wlsdn-s3/${{ github.event.inputs.instanceName }} --recursive --exclude ".git*"     
