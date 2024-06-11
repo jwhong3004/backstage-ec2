@@ -43,33 +43,33 @@ jobs:
 
     - name: Install Terraform state file
       run: aws s3 cp s3://wlsdn-s3/terraform.tfstate ./
-      working-directory: . 
+      working-directory: ./${{ github.event.inputs.instanceName }}
       continue-on-error: true
       
     # Initialize Terraform 
     - name: Terraform Init
       run: terraform init
-      working-directory: .  # Where should this command be run?
+      working-directory: ./${{ github.event.inputs.instanceName }}  # Where should this command be run?
       
     # Format Terraform code
     - name: Terraform Format
       run: terraform fmt
-      working-directory: .
+      working-directory: ./${{ github.event.inputs.instanceName }}
       
     # Validate the Terraform code 
     - name: Terraform Validate
       run: terraform validate
-      working-directory: .
+      working-directory: ./${{ github.event.inputs.instanceName }}
       
     # Apply the Terraform plan
     #- name: Terraform vars
     - name: terraform apply
       run: terraform apply -var instanceName=${{ github.event.inputs.instanceName }} -var awsRegion=${{ github.event.inputs.awsRegion }} -var instanceType=${{ github.event.inputs.instanceType }} -auto-approve
-      working-directory: .    
+      working-directory: ./${{ github.event.inputs.instanceName }}   
       
     - name: Upload Terraform state file
       run: aws s3 cp ./terraform.tfstate s3://wlsdn-s3
-      working-directory: .
+      working-directory: ./${{ github.event.inputs.instanceName }}
 
   # Destroying the  ec2 instance
   destroy_instance:
@@ -92,21 +92,21 @@ jobs:
 
     - name: Install Terraform state file
       run: aws s3 cp s3://wlsdn-s3/terraform.tfstate ./
-      working-directory: .     
+      working-directory: ./${{ github.event.inputs.instanceName }}    
       
     - name: Terraform Init
       run: terraform init
-      working-directory: .
+      working-directory: ./${{ github.event.inputs.instanceName }}
       
     - name: Terraform FMT
       run: terraform fmt
-      working-directory: .      
+      working-directory: ./${{ github.event.inputs.instanceName }}      
       
     # Destroy all resources 
     - name: Terraform Destroy
       run: terraform destroy -var instanceName=${{ github.event.inputs.instanceName }} -var awsRegion=${{ github.event.inputs.awsRegion }} -var instanceType=${{ github.event.inputs.instanceType }} -auto-approve
-      working-directory: .
+      working-directory: ./${{ github.event.inputs.instanceName }}
 
     - name: Upload Terraform state file
       run: aws s3 cp ./terraform.tfstate s3://wlsdn-s3
-      working-directory: .      
+      working-directory: ./${{ github.event.inputs.instanceName }}      
