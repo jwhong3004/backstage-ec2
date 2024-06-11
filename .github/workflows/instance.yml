@@ -72,7 +72,7 @@ jobs:
       working-directory: ${{ github.event.inputs.instanceName }}   
       
     - name: Upload Terraform state file
-      run: aws s3 cp ./${{ github.event.inputs.instanceName }} s3://wlsdn-s3/${{ github.event.inputs.instanceName }} --recursive --exclude ".git*"
+      run: aws s3 cp ./${{ github.event.inputs.instanceName }} s3://wlsdn-s3/${{ github.event.inputs.instanceName }} --recursive --exclude ".git*" --exclude ".terraform*"
 
   # Destroying the  ec2 instance
   destroy_instance:
@@ -84,6 +84,8 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v2 
+      with:
+        path: ${{ github.event.inputs.instanceName }}        
       
 # adding aws keys. Please store the value of these key in GitHub variables
     - name: Configure AWS credentials
@@ -110,4 +112,4 @@ jobs:
       working-directory: ${{ github.event.inputs.instanceName }}
 
     - name: Upload Terraform state file
-      run: aws s3 cp ./${{ github.event.inputs.instanceName }} s3://wlsdn-s3/${{ github.event.inputs.instanceName }} --recursive --exclude ".git*"     
+      run: aws s3 cp ./${{ github.event.inputs.instanceName }} s3://wlsdn-s3/${{ github.event.inputs.instanceName }} --recursive --exclude ".git*" --exclude ".terraform*" 
