@@ -31,7 +31,9 @@ jobs:
     
     # checkout the code from the repository
     - name: Checkout code
-      uses: actions/checkout@v2      
+      uses: actions/checkout@v2  
+      with:
+        path: ${{ github.event.inputs.instanceName }}     
 
 # adding aws keys. Please store the value of these key in GitHub variables
     - name: Configure AWS credentials
