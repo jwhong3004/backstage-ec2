@@ -12,6 +12,7 @@ on:
         description: 'AWS Region for the instance'
         required: true
       instanceType:
+        type: choice
         description: 'AWS instance type'
         required: true
         options: 
